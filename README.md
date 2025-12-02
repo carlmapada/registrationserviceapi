@@ -125,3 +125,7 @@ mvn spring-boot:run -Dspring-boot.run.profiles=local
 - Agents can be linked to multiple MGAs or Carriers based on invitation.
 - Global exception handler is included for consistent error responses.
 
+## License
+
+Proprietary --- Tropisure Internal Use Only.
+
