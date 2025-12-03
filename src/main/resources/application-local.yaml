@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    active: prod  # IMPORTANT
+  application:
+    name: registrationserviceapi
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tropisure
+    username: tropisure_app
+    password: Tropisure9$
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.default_schema: registration_db
+    show-sql: true
+
+# Disable AWS integrations
+aws:
+  cognito:
+    enabled: false
+    user-pool-id: dummy
+  ses:
+    enabled: false
+  region: us-east-1
+
+security:
+  mode: mock # <-- your own flag (choose any name)
+
+jwt:
+  invite:
+    # Use at least a 256-bit secret for HS256 — this is just an example
+    secret: mZ4tG8kR6vUq9J3pXc1L5V2fY8wH0aN7sQeT1bC6rZ0=
+    expirationMs: 172800000   # 48 hours
