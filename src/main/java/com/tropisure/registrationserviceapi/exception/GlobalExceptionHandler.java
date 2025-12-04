@@ -75,10 +75,10 @@ public class GlobalExceptionHandler {
     }
 
     // Handle generic exceptions
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleAllExceptions(Exception ex) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<Object> handleAllExceptions(Exception ex) {
+//        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+//    }
 
     // Helper method to build the response
     private ResponseEntity<Object> buildResponse(HttpStatus status, String message) {
