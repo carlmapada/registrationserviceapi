@@ -1,6 +1,7 @@
 spring:
-  profiles:
-    active: prod  # IMPORTANT
+  config:
+    activate:
+      on-profile: local
   application:
     name: registrationserviceapi
   datasource:
@@ -25,6 +26,9 @@ aws:
 
 security:
   mode: mock # <-- your own flag (choose any name)
+
+server:
+  port: 8080
 
 jwt:
   invite:
