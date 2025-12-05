@@ -35,7 +35,7 @@ public class MockCognitoClientService implements ICognitoClientService {
     }
 
     @Override
-    public void createUserWithRole(String username, String email, String password, String role) {
+    public String createUserWithRole(String username, String email, String password, String role) {
         if (users.containsKey(username)) {
             throw new IllegalArgumentException("User already exists in mock Cognito: " + username);
         }
@@ -43,6 +43,7 @@ public class MockCognitoClientService implements ICognitoClientService {
         MockUser user = new MockUser(username, email, password, role);
         users.put(username, user);
         System.out.println("Created mock Cognito user: " + username + " with role " + role);
+        return username;
     }
 
     // Simple inner class for mock user

@@ -88,14 +88,17 @@ public class AgentRegistrationService {
         }
 
         // 5️⃣ Create Cognito user
-        String username = request.getEmail().split("@")[0];
-        cognitoClientService.createUserWithRole(
-                //request.getEmail(),
-                username,
+        String cognitoSub = cognitoClientService.createUserWithRole(
+                request.getEmail(),
                 request.getEmail(),
                 request.getPassword(), // password provided by agent
                 "AGENT"
         );
+
+        // 6️⃣ Save Cognito sub in AgentProfile
+        agent.setCognitoSub(cognitoSub);
+        agentProfileRepository.save(agent); // update agent with sub
+
         return AgentRegistrationResponse.builder()
                 .agentId(agent.getId())
                 .status(agent.getStatus())

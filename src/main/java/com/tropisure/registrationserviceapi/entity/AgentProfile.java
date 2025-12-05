@@ -55,5 +55,8 @@ public class AgentProfile {
 
     @OneToMany(mappedBy = "agent")
     private List<AgentCarrierLink> carrierLinks;
+
+    @Column(name = "cognito_sub", unique = true)
+    private String cognitoSub;
 }
 

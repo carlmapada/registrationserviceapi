@@ -52,16 +52,18 @@ public class CognitoClientService implements ICognitoClientService{
     }
 
     @Override
-    public void createUserWithRole(String username, String email, String password, String role) {
+    public String createUserWithRole(String username, String email, String password, String role) {
 
         try {
             // 1️⃣ Check if user already exists
             try {
-                cognitoClient.adminGetUser(builder -> builder.userPoolId(userPoolId).username(username));
+                AdminGetUserResponse existingUser = cognitoClient.adminGetUser(
+                        builder -> builder.userPoolId(userPoolId).username(username)
+                );
                 log.warn("User {} already exists in Cognito pool {}", username, userPoolId);
-                return; // user exists, skip creation
+                return existingUser.username(); // return the existing username (sub not available here)
             } catch (UserNotFoundException ignored) {
-                // user does not exist, proceed
+                // proceed
             }
 
             // 2️⃣ Create user
@@ -76,8 +78,12 @@ public class CognitoClientService implements ICognitoClientService{
                     .messageAction(MessageActionType.SUPPRESS)
                     .build();
 
-            cognitoClient.adminCreateUser(createUserRequest);
-            log.info("Created user {} in Cognito pool {}", username, userPoolId);
+            AdminCreateUserResponse createUserResponse = cognitoClient.adminCreateUser(createUserRequest);
+            String cognitoSub = createUserResponse.user().username(); // This is the sub
+            log.info("Created user {} in Cognito pool {} with sub {}", username, userPoolId, cognitoSub);
+
+//            cognitoClient.adminCreateUser(createUserRequest);
+//            log.info("Created user {} in Cognito pool {}", username, userPoolId);
 
             // 3️⃣ Set permanent password
             AdminSetUserPasswordRequest setPasswordRequest = AdminSetUserPasswordRequest.builder()
@@ -112,6 +118,8 @@ public class CognitoClientService implements ICognitoClientService{
 
             cognitoClient.adminAddUserToGroup(addToGroupRequest);
             log.info("Added user {} to group {}", username, role);
+
+            return cognitoSub;
 
         } catch (CognitoIdentityProviderException e) {
             log.error("Failed to create user {}: {}", username, e.awsErrorDetails().errorMessage(), e);

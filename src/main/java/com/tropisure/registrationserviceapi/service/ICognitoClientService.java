@@ -7,6 +7,6 @@ public interface ICognitoClientService {
 
     AdminCreateUserResponse createUser(String username, String email);
     AdminInitiateAuthResponse authenticate(String userPoolId, String clientId, String username, String password);
-    void createUserWithRole(String username, String email, String password, String role);
+    String createUserWithRole(String username, String email, String password, String role);
 
 }
